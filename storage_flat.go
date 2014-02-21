@@ -46,8 +46,7 @@ func (fs *FileStorage) GetAll() []*tweet {
 	fs.open()
 	defer fs.file.Close()
 
-	d := json.NewDecoder(fs.file)
-	if err := d.Decode(&fs.fileState); err != nil {
+	if err := json.NewDecoder(fs.file).Decode(&fs.fileState); err != nil {
 		panic(err)
 	}
 	fs.fileState.Items = len(fs.fileState.Tweets)
@@ -116,12 +115,11 @@ func (fs *FileStorage) saveAll(tweets []*tweet) error {
 	defer func() { fs.fileState.Tweets = nil }()
 
 	if StorageFormatNice == true {
-		if err := EncodePretty(&fs.fileState, fs.file); err != nil {
+		if err := EncodePretty(fs.file, &fs.fileState); err != nil {
 			return err
 		}
 	} else {
-		e := json.NewEncoder(fs.file)
-		if err := e.Encode(&fs.fileState); err != nil {
+		if err := json.NewEncoder(fs.file).Encode(&fs.fileState); err != nil {
 			return err
 		}
 	}
