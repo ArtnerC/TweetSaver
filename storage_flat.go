@@ -108,6 +108,7 @@ func (fs *FileStorage) Delete(id int) {
 func (fs *FileStorage) saveAll(tweets []*tweet) error {
 	fs.open()
 	defer fs.file.Close()
+	fs.file.Truncate(0)
 
 	fs.fileState.Tweets = tweets
 	fs.fileState.Items = len(tweets)
