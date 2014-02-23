@@ -6,14 +6,18 @@ import (
 	"time"
 )
 
-var StorageFileName = "Tweets.json"
-var StorageFormatNice = true
+var StorageFileName = "Tweets.json" // Target file
+var StorageFormatNice = true        // Pretty Print output (uses more space)
 
+// FileStorage implements the Persistence interface as a flat file with JSON
+// encoded data. Operations are expensive and require reading/writing the
+// entire file. This is an alternative/placeholder for a database.
 type FileStorage struct {
 	file      *os.File
 	fileState FileStruct
 }
 
+// FileStruct represents the structure of the file the data is stored in
 type FileStruct struct {
 	CurrentID    int
 	Items        int

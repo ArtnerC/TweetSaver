@@ -1,5 +1,8 @@
 package tweetsave
 
+// CacheStorage implements the Persistence interface as an in-memory
+// storage layer. Use NewStorageCache and NewMemoryStorage to initialize.
+// This is an alternative/placeholder for MEMCACHED.
 type CacheStorage struct {
 	tweets    map[int]*tweet
 	finds     map[string][]*tweet
@@ -26,6 +29,7 @@ func NewMemoryStorage() *CacheStorage {
 	return NewStorageCache(nil)
 }
 
+// Get retrieves an item by ID
 func (cs *CacheStorage) Get(id int) *tweet {
 	if v, ok := cs.tweets[id]; ok == true {
 		return v
@@ -39,6 +43,8 @@ func (cs *CacheStorage) Get(id int) *tweet {
 	return nil
 }
 
+// GetAll returns all stored elements. It also caches everything for future
+// quick access.
 func (cs *CacheStorage) GetAll() []*tweet {
 	if cs.store != nil && cs.allLoaded == false {
 		all := cs.store.GetAll()
@@ -62,6 +68,7 @@ func (cs *CacheStorage) GetAll() []*tweet {
 	return nil
 }
 
+// Find does a search for all items by author. Individual finds are cached.
 func (cs *CacheStorage) Find(author string) []*tweet {
 	if v, ok := cs.finds[author]; ok == true {
 		return v
@@ -88,6 +95,7 @@ func (cs *CacheStorage) Find(author string) []*tweet {
 	return nil
 }
 
+// Add will save a new item to underlying storage, cache, and cached finds.
 func (cs *CacheStorage) Add(t *tweet) (int, error) {
 	var id int
 	if cs.store != nil {
@@ -105,6 +113,7 @@ func (cs *CacheStorage) Add(t *tweet) (int, error) {
 	return id, nil
 }
 
+// Update modifies an existing item in underlying storage, cache and finds.
 func (cs *CacheStorage) Update(t *tweet) error {
 	if cs.store != nil {
 		if err := cs.store.Update(t); err != nil {
@@ -123,6 +132,7 @@ func (cs *CacheStorage) Update(t *tweet) error {
 	return nil
 }
 
+// Delete removes an item by id from underlying storage, cache, and finds.
 func (cs *CacheStorage) Delete(id int) {
 	if cs.store != nil {
 		cs.store.Delete(id)
