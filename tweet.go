@@ -18,8 +18,7 @@ type tweet struct {
 
 func NewTweet(r io.Reader) (*tweet, error) {
 	t := &tweet{SaveTime: time.Now()}
-	decoder := json.NewDecoder(r)
-	err := decoder.Decode(t)
+	err := json.NewDecoder(r).Decode(t)
 	return t, err
 }
 
