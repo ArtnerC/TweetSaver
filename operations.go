@@ -1,16 +1,15 @@
-package tweetsave
+package tweetsaver
 
 import (
-	"encoding/json"
 	"errors"
 	"net/http"
 	"strconv"
 )
 
-var ErrorBadRequest = errors.New("tweetsave: poorly formatted request")
-var ErrorNotFound = errors.New("tweetsave: item not found")
+var ErrorBadRequest = errors.New("tweetsaver: poorly formatted request")
+var ErrorNotFound = errors.New("tweetsaver: item not found")
 
-func PerformGet(r http.Request, v View, p Persistence) error {
+func PerformGet(r *http.Request, v View, p Persistence) error {
 	id, err := strconv.Atoi(r.FormValue("id"))
 	if err != nil {
 		v.DisplayError(ErrorBadRequest, http.StatusBadRequest)
@@ -19,7 +18,7 @@ func PerformGet(r http.Request, v View, p Persistence) error {
 
 	t := p.Get(id)
 	if t == nil {
-		v.DisplayError(ErrorNotFound, http.StatusNoContent)
+		v.DisplayError(ErrorNotFound, http.StatusNotFound)
 		return ErrorNotFound
 	}
 

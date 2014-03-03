@@ -1,27 +1,25 @@
-package tweetsave
+package tweetsaver
 
 import (
 	"encoding/json"
-	"io"
 	"net/http"
 )
 
 type JSONView struct {
-	response io.Writer
+	response http.ResponseWriter
 }
 
-func NewJSONView(w io.Writer) *JSONView {
-	return &PageView{response: w}
+func NewJSONView(w http.ResponseWriter) *JSONView {
+	return &JSONView{response: w}
 }
 
 func (jv *JSONView) DisplayItem(t *tweet) {
-	err = json.NewEncoder(w).Encode(t)
+	err := json.NewEncoder(jv.response).Encode(t)
 	if err != nil {
-		http.Error(pv.response, err, http.StatusInternalServerError)
-		return err
+		http.Error(jv.response, err.Error(), http.StatusInternalServerError)
 	}
 }
 
 func (jv *JSONView) DisplayError(err error, code int) {
-	http.Error(pv.response, err, code)
+	http.Error(jv.response, err.Error(), code)
 }

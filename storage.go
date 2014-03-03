@@ -1,4 +1,4 @@
-package tweetsave
+package tweetsaver
 
 type Persistence interface {
 	Get(id int) *tweet

@@ -1,4 +1,4 @@
-package tweetsave
+package tweetsaver
 
 import (
 	"encoding/json"

@@ -1,27 +1,26 @@
-package tweetsave
+package tweetsaver
 
 import (
 	"html/template"
-	"io"
 	"net/http"
 )
 
 type PageView struct {
-	response io.Writer
+	response http.ResponseWriter
 }
 
-func NewPageView(w io.Writer) *PageView {
+func NewPageView(w http.ResponseWriter) *PageView {
 	return &PageView{response: w}
 }
 
 func (pv *PageView) DisplayItem(t *tweet) {
 	if err := ItemTemplate.Execute(pv.response, t); err != nil {
-		http.Error(pv.response, err, http.StatusInternalServerError)
+		http.Error(pv.response, err.Error(), http.StatusInternalServerError)
 	}
 }
 
 func (pv *PageView) DisplayError(err error, code int) {
-	http.Error(pv.response, err, code)
+	http.Error(pv.response, err.Error(), code)
 }
 
 var ItemHTML = `

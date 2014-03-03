@@ -1,4 +1,4 @@
-package tweetsave
+package tweetsaver
 
 // CacheStorage implements the Persistence interface as an in-memory
 // storage layer. Use NewStorageCache and NewMemoryStorage to initialize.

@@ -1,4 +1,4 @@
-package tweetsave
+package tweetsaver
 
 type View interface {
 	DisplayItem(t *tweet)
