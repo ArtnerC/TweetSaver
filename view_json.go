@@ -20,6 +20,13 @@ func (jv *JSONView) DisplayItem(t *tweet) {
 	}
 }
 
+func (jv *JSONView) DisplayAll(tweets []*tweet) {
+	err := json.NewEncoder(jv.response).Encode(tweets)
+	if err != nil {
+		http.Error(jv.response, err.Error(), http.StatusInternalServerError)
+	}
+}
+
 func (jv *JSONView) DisplayError(err error, code int) {
 	http.Error(jv.response, err.Error(), code)
 }

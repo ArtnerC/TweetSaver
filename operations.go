@@ -25,3 +25,9 @@ func PerformGet(r *http.Request, v View, p Persistence) error {
 	v.DisplayItem(t)
 	return nil
 }
+
+func PerformGetAll(req *http.Request, v View, p Persistence) error {
+	tweets := p.GetAll()
+	v.DisplayAll(tweets)
+	return nil
+}
