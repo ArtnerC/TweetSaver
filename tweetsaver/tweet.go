@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-type tweet struct {
+type Tweet struct {
 	Id        int
 	Text      string
 	Author    string
@@ -16,12 +16,12 @@ type tweet struct {
 	SaveTime  time.Time
 }
 
-func NewTweet(r io.Reader) (*tweet, error) {
-	t := &tweet{SaveTime: time.Now()}
+func NewTweet(r io.Reader) (*Tweet, error) {
+	t := &Tweet{SaveTime: time.Now()}
 	err := json.NewDecoder(r).Decode(t)
 	return t, err
 }
 
-func (t *tweet) String() string {
+func (t *Tweet) String() string {
 	return fmt.Sprintf(`"%s" -%s on [%s]`, t.Text, t.Author, t.Timestamp.Format(time.Stamp))
 }

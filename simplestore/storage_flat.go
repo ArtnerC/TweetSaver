@@ -1,7 +1,8 @@
-package tweetsaver
+package simplestore
 
 import (
 	"encoding/json"
+	ts "github.com/ArtnerC/TweetSaver/tweetsaver"
 	"os"
 	"time"
 )
@@ -22,7 +23,7 @@ type FileStruct struct {
 	CurrentID    int
 	Items        int
 	LastModified time.Time
-	Tweets       []*tweet
+	Tweets       []*ts.Tweet
 }
 
 // open handles opening or creating a new file to store tweets as JSON
@@ -35,7 +36,7 @@ func (fs *FileStorage) open() {
 }
 
 // Get will get a tweet given the unique identifier as id
-func (fs *FileStorage) Get(id int) (ret *tweet) {
+func (fs *FileStorage) Get(id int) (ret *ts.Tweet) {
 	for _, t := range fs.GetAll() {
 		if t.Id == id {
 			ret = t
@@ -46,7 +47,7 @@ func (fs *FileStorage) Get(id int) (ret *tweet) {
 }
 
 // GetAll will fetch and return all stored tweets
-func (fs *FileStorage) GetAll() []*tweet {
+func (fs *FileStorage) GetAll() []*ts.Tweet {
 	fs.open()
 	defer fs.file.Close()
 
@@ -58,7 +59,7 @@ func (fs *FileStorage) GetAll() []*tweet {
 }
 
 // Find returns an array with all tweets of the specified author
-func (fs *FileStorage) Find(author string) (found []*tweet) {
+func (fs *FileStorage) Find(author string) (found []*ts.Tweet) {
 	for _, v := range fs.GetAll() {
 		if v.Author == author {
 			found = append(found, v)
@@ -68,7 +69,7 @@ func (fs *FileStorage) Find(author string) (found []*tweet) {
 }
 
 // Add will save a new tweet and return the index or an error
-func (fs *FileStorage) Add(t *tweet) (int, error) {
+func (fs *FileStorage) Add(t *ts.Tweet) (int, error) {
 	tweets := fs.GetAll()
 	id := fs.fileState.CurrentID
 	fs.fileState.CurrentID++
@@ -84,7 +85,7 @@ func (fs *FileStorage) Add(t *tweet) (int, error) {
 }
 
 // Update updates the provided tweet and returns an error or nil
-func (fs *FileStorage) Update(t *tweet) error {
+func (fs *FileStorage) Update(t *ts.Tweet) error {
 	tweets := fs.GetAll()
 	for i, v := range tweets {
 		if v.Id == t.Id {
@@ -109,7 +110,7 @@ func (fs *FileStorage) Delete(id int) {
 }
 
 // saveAll is a private helper to facilitate re-saving the tweets file
-func (fs *FileStorage) saveAll(tweets []*tweet) error {
+func (fs *FileStorage) saveAll(tweets []*ts.Tweet) error {
 	fs.open()
 	defer fs.file.Close()
 	fs.file.Truncate(0)
@@ -120,7 +121,7 @@ func (fs *FileStorage) saveAll(tweets []*tweet) error {
 	defer func() { fs.fileState.Tweets = nil }()
 
 	if StorageFormatNice == true {
-		if err := EncodePretty(fs.file, &fs.fileState); err != nil {
+		if err := ts.EncodePretty(fs.file, &fs.fileState); err != nil {
 			return err
 		}
 	} else {

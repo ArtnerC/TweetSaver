@@ -1,13 +1,14 @@
 package main
 
 import (
-	ts "github.com/ArtnerC/TweetSaver"
+	"github.com/ArtnerC/TweetSaver/simplestore"
+	ts "github.com/ArtnerC/TweetSaver/tweetsaver"
 	"github.com/codegangsta/martini"
 	"net/http"
 )
 
 var m *martini.Martini
-var Storage = ts.NewStorageCache(new(ts.FileStorage))
+var Storage = simplestore.NewStorageCache(new(simplestore.FileStorage))
 
 func init() {
 	m = martini.New()
@@ -16,10 +17,11 @@ func init() {
 	m.Use(martini.Static("../static"))
 
 	r := martini.NewRouter()
-	r.Get(`/get(\.json)?`, Get)
-	r.Get(`/get\.html`, GetHTML)
-	r.Get(`/getall(\.json)?`, GetAll)
-	r.Get(`/getall\.html|/index\.html|/`, GetAllHTML)
+	r.Get(`/tweets(\.json)?/:id`, Get)
+	r.Get(`/tweets\.html/:id`, GetHTML)
+
+	r.Get(`/tweets(\.json)?`, GetAll)
+	r.Get(`/tweets\.html|/index\.html|/`, GetAllHTML)
 	r.NotFound(NotImplemented)
 
 	m.Action(r.Handle)
@@ -31,20 +33,20 @@ func main() {
 	http.ListenAndServe(":8080", nil)
 }
 
-func Get(rw http.ResponseWriter, req *http.Request) {
-	ts.PerformGet(req, ts.NewJSONView(rw), Storage)
+func Get(params martini.Params, rw http.ResponseWriter, req *http.Request) {
+	ts.PerformGet(params["id"], ts.NewJSONView(rw), Storage)
 }
 
-func GetHTML(rw http.ResponseWriter, req *http.Request) {
-	ts.PerformGet(req, ts.NewPageView(rw), Storage)
+func GetHTML(params martini.Params, rw http.ResponseWriter, req *http.Request) {
+	ts.PerformGet(params["id"], ts.NewPageView(rw), Storage)
 }
 
 func GetAll(rw http.ResponseWriter, req *http.Request) {
-	ts.PerformGetAll(req, ts.NewJSONView(rw), Storage)
+	ts.PerformGetAll(ts.NewJSONView(rw), Storage)
 }
 
 func GetAllHTML(rw http.ResponseWriter, req *http.Request) {
-	ts.PerformGetAll(req, ts.NewPageView(rw), Storage)
+	ts.PerformGetAll(ts.NewPageView(rw), Storage)
 }
 
 func NotImplemented(rw http.ResponseWriter, req *http.Request) {

@@ -1,22 +1,26 @@
-package tweetsaver
+package simplestore
+
+import (
+	ts "github.com/ArtnerC/TweetSaver/tweetsaver"
+)
 
 // CacheStorage implements the Persistence interface as an in-memory
 // storage layer. Use NewStorageCache and NewMemoryStorage to initialize.
 // This is an alternative/placeholder for MEMCACHED.
 type CacheStorage struct {
-	tweets    map[int]*tweet
-	finds     map[string][]*tweet
-	store     Persistence
+	tweets    map[int]*ts.Tweet
+	finds     map[string][]*ts.Tweet
+	store     ts.Persistence
 	allLoaded bool
 }
 
 // NewStorageCache creates a CacheStorage object that applies
 // a caching layer to the provided p which implements the
 // Persistence interface.
-func NewStorageCache(p Persistence) *CacheStorage {
+func NewStorageCache(p ts.Persistence) *CacheStorage {
 	return &CacheStorage{
-		tweets:    make(map[int]*tweet),
-		finds:     make(map[string][]*tweet),
+		tweets:    make(map[int]*ts.Tweet),
+		finds:     make(map[string][]*ts.Tweet),
 		store:     p,
 		allLoaded: false,
 	}
@@ -30,7 +34,7 @@ func NewMemoryStorage() *CacheStorage {
 }
 
 // Get retrieves an item by ID
-func (cs *CacheStorage) Get(id int) *tweet {
+func (cs *CacheStorage) Get(id int) *ts.Tweet {
 	if v, ok := cs.tweets[id]; ok == true {
 		return v
 	}
@@ -45,7 +49,7 @@ func (cs *CacheStorage) Get(id int) *tweet {
 
 // GetAll returns all stored elements. It also caches everything for future
 // quick access.
-func (cs *CacheStorage) GetAll() []*tweet {
+func (cs *CacheStorage) GetAll() []*ts.Tweet {
 	if cs.store != nil && cs.allLoaded == false {
 		all := cs.store.GetAll()
 		for _, t := range all {
@@ -56,7 +60,7 @@ func (cs *CacheStorage) GetAll() []*tweet {
 		cs.allLoaded = true
 		return all
 	} else {
-		tweets := make([]*tweet, 0, len(cs.tweets))
+		tweets := make([]*ts.Tweet, 0, len(cs.tweets))
 		for _, v := range cs.tweets {
 			tweets = append(tweets, v)
 		}
@@ -69,7 +73,7 @@ func (cs *CacheStorage) GetAll() []*tweet {
 }
 
 // Find does a search for all items by author. Individual finds are cached.
-func (cs *CacheStorage) Find(author string) []*tweet {
+func (cs *CacheStorage) Find(author string) []*ts.Tweet {
 	if v, ok := cs.finds[author]; ok == true {
 		return v
 	}
@@ -82,7 +86,7 @@ func (cs *CacheStorage) Find(author string) []*tweet {
 		}
 	}
 
-	found := make([]*tweet, 0, 10)
+	found := make([]*ts.Tweet, 0, 10)
 	for _, v := range cs.tweets {
 		if v.Author == author {
 			found = append(found, v)
@@ -96,7 +100,7 @@ func (cs *CacheStorage) Find(author string) []*tweet {
 }
 
 // Add will save a new item to underlying storage, cache, and cached finds.
-func (cs *CacheStorage) Add(t *tweet) (int, error) {
+func (cs *CacheStorage) Add(t *ts.Tweet) (int, error) {
 	var id int
 	if cs.store != nil {
 		if id, err := cs.store.Add(t); err != nil {
@@ -114,7 +118,7 @@ func (cs *CacheStorage) Add(t *tweet) (int, error) {
 }
 
 // Update modifies an existing item in underlying storage, cache and finds.
-func (cs *CacheStorage) Update(t *tweet) error {
+func (cs *CacheStorage) Update(t *ts.Tweet) error {
 	if cs.store != nil {
 		if err := cs.store.Update(t); err != nil {
 			return err

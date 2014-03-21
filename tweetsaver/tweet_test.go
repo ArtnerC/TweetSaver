@@ -28,7 +28,7 @@ func TestNewTweet(t *testing.T) {
 }
 
 func TestString(t *testing.T) {
-	a := &tweet{Text: "This is a tweet", Author: "Person", Timestamp: time.Now()}
+	a := &Tweet{Text: "This is a tweet", Author: "Person", Timestamp: time.Now()}
 	s := `"` + a.Text + `" -` + a.Author + ` on [` + a.Timestamp.Format(time.Stamp) + `]`
 	if as := a.String(); as != s {
 		t.Error("Improper string created:", as)

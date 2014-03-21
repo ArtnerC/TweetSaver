@@ -1,12 +1,12 @@
 package tweetsaver
 
 type View interface {
-	DisplayItem(t *tweet)
-	DisplayAll(tweets []*tweet)
-	//DisplayResults(results []*tweet)
+	DisplayItem(t *Tweet)
+	DisplayAll(tweets []*Tweet)
+	//DisplayResults(results []*Tweet)
 	//DisplayAddItem()
 	//DisplayItemAdded(id int)
-	//DisplayEditItem(t *tweet)
+	//DisplayEditItem(t *Tweet)
 	//DisplayItemDeleted()
 
 	DisplayError(err error, code int)

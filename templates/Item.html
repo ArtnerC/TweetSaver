@@ -1,0 +1,10 @@
+{{define "Title"}}Tweet {{.Id}}{{end}}
+
+{{define "Body"}}
+<div class="jumbotron">
+    <blockquote>
+		<h1>{{.Text}}</h1>
+		<footer>{{.Author}} on <a href="{{.Link}}">Twitter</a></footer>
+	</blockquote>
+</div>
+{{end}}

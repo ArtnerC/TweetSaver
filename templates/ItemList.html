@@ -1,0 +1,18 @@
+{{define "Title"}}Tweet Saver{{end}}
+
+{{define "Body"}}
+<h1>All Tweets</h1>
+<div class="row">
+    {{range .}}
+	<div class="col-md-6 col-lg-4">
+		<div class="well">
+			<blockquote>
+				<p>{{.Text}}</p>
+				<footer>{{.Author}} on <a href="{{.Link}}">Twitter</a></footer>
+			</blockquote>
+			<p class="text-right"><a href="/tweets.html/{{.Id}}" class="btn btn-default">View</a></p>
+		</div>
+	</div>
+	{{end}}
+</div>
+{{end}}

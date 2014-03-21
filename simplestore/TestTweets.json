@@ -1,0 +1,55 @@
+{
+ "CurrentID": 8,
+ "Items": 6,
+ "LastModified": "2014-03-21T02:13:48.8386194-07:00",
+ "Tweets": [
+  {
+   "Id": 0,
+   "Text": "I don't like to wake up!",
+   "Author": "NormalTweetGuy",
+   "Link": "https://twitter.com/NormalTweetGuy/status/436488438657712130",
+   "Timestamp": "2014-03-06T02:13:48.8216186-08:00",
+   "SaveTime": "2014-03-21T02:13:48.822609-07:00"
+  },
+  {
+   "Id": 1,
+   "Text": "Run the marathon, not the sprint.",
+   "Author": "Frank Underwood",
+   "Link": "https://twitter.com/Frank_Underwood/status/436479390500016128",
+   "Timestamp": "2014-02-21T02:13:48.822609-08:00",
+   "SaveTime": "2014-03-21T02:13:48.822609-07:00"
+  },
+  {
+   "Id": 2,
+   "Text": "the Earth is 30% land and .000001% Vitamin Water",
+   "Author": "lawblob",
+   "Link": "https://twitter.com/lawblob/status/436308475694837760",
+   "Timestamp": "2014-02-06T02:13:48.822609-08:00",
+   "SaveTime": "2014-03-21T02:13:48.822609-07:00"
+  },
+  {
+   "Id": 4,
+   "Text": "I'm the president of the French Chapter of the Beyoncé fan club. We're called C'est My Name",
+   "Author": "mattytalks",
+   "Link": "https://twitter.com/mattytalks/status/436351075927347201",
+   "Timestamp": "2014-01-06T02:13:48.822609-08:00",
+   "SaveTime": "2014-03-21T02:13:48.822609-07:00"
+  },
+  {
+   "Id": 5,
+   "Text": "Hi I'm the guy you were avoiding eye contact with. I googled your name, would you like to go out wi..yes that was me who added u on facebook",
+   "Author": "briangaar",
+   "Link": "https://twitter.com/briangaar/status/442044703190421504",
+   "Timestamp": "2013-12-21T02:13:48.822609-08:00",
+   "SaveTime": "2014-03-21T02:13:48.822609-07:00"
+  },
+  {
+   "Id": 7,
+   "Text": "i got 1100011 problems but knowimg binary aint 1",
+   "Author": "jonnysun",
+   "Link": "https://twitter.com/jonnysun/status/436222727851356160",
+   "Timestamp": "2014-01-21T02:13:48.822609-08:00",
+   "SaveTime": "2014-03-21T02:13:48.8296101-07:00"
+  }
+ ]
+}
