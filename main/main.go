@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"github.com/ArtnerC/TweetSaver/simplestore"
 	ts "github.com/ArtnerC/TweetSaver/tweetsaver"
 	"github.com/codegangsta/martini"
@@ -11,6 +12,8 @@ var m *martini.Martini
 var Storage = simplestore.NewStorageCache(new(simplestore.FileStorage))
 
 func init() {
+	flag.Parse()
+
 	m = martini.New()
 	m.Use(martini.Recovery())
 	m.Use(martini.Logger())
