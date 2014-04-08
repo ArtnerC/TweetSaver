@@ -1,0 +1,24 @@
+{{define "Title"}}Add Tweet{{end}}
+
+{{define "Body"}}
+<h1 class="page-header">Add New Tweet</h1>
+<form role="form" action="/tweets.html" method="post" enctype="multipart/form-data">
+	<div class="form-group">
+		<label for="inputAuthor">Author</label>
+		<input type="text" name="Author" class="form-control" id="inputAuthor" placeholder="@Tweeter">
+	</div>
+	<div class="form-group">
+		<label for="inputText">Tweet Text</label>
+		<textarea class="form-control" name="Text" rows="3" id="inputText" placeholder="Tweet..."></textarea>
+	</div>
+	<div class="form-group">
+		<label for="inputLink">Tweet URL</label>
+		<input type="url" name="Link" class="form-control" id="inputLink" placeholder="http://twitter.com/username/id">
+	</div>
+	<div class="form-group">
+		<label for="inputTimestamp">Date</label>
+		<input type="datetime" name="Timestamp" class="form-control" id="inputTimestamp" placeholder="5:30 AM - 7 Apr 2014">
+	</div>
+	<button type="submit" class="btn btn-default">Add</button>
+</form>
+{{end}}

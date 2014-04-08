@@ -1,0 +1,21 @@
+application: tweetsaver
+version: 1
+runtime: go
+api_version: go1
+
+handlers:
+- url: /((css|fonts|img|js)/.*)
+  static_files: static/\1
+  upload: static/(css|fonts|img|js)/.*
+
+- url: /(favicon\.ico|apple-touch-icon-precomposed\.png)
+  static_files: static/\1
+  upload: static/(favicon\.ico|apple-touch-icon-precomposed\.png)
+
+- url: /404\.html
+  static_files: static/404.html
+  upload: static/404\.html
+  application_readable: true
+
+- url: /.*
+  script: _go_app
