@@ -27,6 +27,14 @@ func (jv *JSONView) DisplayAll(tweets []*Tweet) {
 	}
 }
 
+func (jv *JSONView) DisplayAddItem() {
+	return
+}
+
+func (jv *JSONView) DisplayItemAdded(id int) {
+
+}
+
 func (jv *JSONView) DisplayError(err error, code int) {
 	http.Error(jv.response, err.Error(), code)
 }

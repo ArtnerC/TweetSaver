@@ -10,7 +10,7 @@ import (
 	"appengine/datastore"
 )
 
-const tweet_kind = "Tweet"
+const tweet_kind = "SavedTweet"
 
 type DataStore struct {
 	c appengine.Context
@@ -21,15 +21,13 @@ func NewDataStore(context appengine.Context) *DataStore {
 }
 
 func (ds *DataStore) Get(id int) *tweetsaver.Tweet {
-	key := datastore.NewKey(ds.c, tweet_kind, "", id, tweetsaverKey(ds.c))
+	key := datastore.NewKey(ds.c, tweet_kind, "", int64(id), tweetsaverKey(ds.c))
 	t := new(tweetsaver.Tweet)
 
 	err := datastore.Get(ds.c, key, t)
 	if err != nil {
 		return nil
 	}
-
-	t.Id = key.IntID()
 	return t
 }
 
@@ -60,14 +58,14 @@ func (ds *DataStore) Add(t *tweetsaver.Tweet) (int, error) {
 	t.SaveTime = time.Now()
 
 	key := datastore.NewIncompleteKey(ds.c, tweet_kind, tweetsaverKey(ds.c))
-	t.Id = key.IntID()
+	t.Id = int(key.IntID()) // Fix: Save key somehow
 
 	k, err := datastore.Put(ds.c, key, t)
 	if err != nil {
 		return 0, fmt.Errorf("Datastore Add: %s", err.Error())
 	}
 
-	return k.IntID(), nil
+	return int(k.IntID()), nil
 }
 
 func (ds *DataStore) Update(t *tweetsaver.Tweet) error {
