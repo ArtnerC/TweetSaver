@@ -27,6 +27,23 @@ func PerformGet(idstr string, v View, p Persistence) error {
 	return nil
 }
 
+func PerformGetAt(pos, limit string, v View, p Persistence) error {
+	intpos, err := strconv.Atoi(pos)
+	if intpos < 0 || err != nil {
+		v.DisplayError(ErrorBadRequest, http.StatusBadRequest)
+		return ErrorBadRequest
+	}
+
+	intlimit, err := strconv.Atoi(limit)
+	if intlimit <= 0 || err != nil {
+		intlimit = 10
+	}
+
+	tweets := p.GetAt(intpos, intlimit)
+	v.DisplayAll(tweets)
+	return nil
+}
+
 func PerformGetAll(v View, p Persistence) error {
 	tweets := p.GetAll()
 	v.DisplayAll(tweets)

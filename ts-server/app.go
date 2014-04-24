@@ -50,12 +50,24 @@ func GetHTML(params martini.Params, rw http.ResponseWriter, p ts.Persistence) {
 	ts.PerformGet(params["id"], ts.NewPageView(rw), p)
 }
 
-func GetAll(rw http.ResponseWriter, p ts.Persistence) {
-	ts.PerformGetAll(ts.NewJSONView(rw), p)
+func GetAll(rw http.ResponseWriter, req *http.Request, p ts.Persistence) {
+	pos, limit := req.FormValue("pos"), req.FormValue("limit")
+
+	if pos == "" {
+		ts.PerformGetAll(ts.NewJSONView(rw), p)
+	}
+
+	ts.PerformGetAt(pos, limit, ts.NewJSONView(rw), p)
 }
 
-func GetAllHTML(rw http.ResponseWriter, p ts.Persistence) {
-	ts.PerformGetAll(ts.NewPageView(rw), p)
+func GetAllHTML(rw http.ResponseWriter, req *http.Request, p ts.Persistence) {
+	pos, limit := req.FormValue("pos"), req.FormValue("limit")
+
+	if pos == "" {
+		ts.PerformGetAll(ts.NewPageView(rw), p)
+	}
+
+	ts.PerformGetAt(pos, limit, ts.NewPageView(rw), p)
 }
 
 func DisplayAddHTML(rw http.ResponseWriter) {
