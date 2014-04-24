@@ -101,18 +101,20 @@ func (cs *CacheStorage) Find(author string) []*ts.Tweet {
 
 // Add will save a new item to underlying storage, cache, and cached finds.
 func (cs *CacheStorage) Add(t *ts.Tweet) (int, error) {
-	var id int
+	id := len(cs.tweets)
+	var err error
 	if cs.store != nil {
-		if id, err := cs.store.Add(t); err != nil {
-			return id, err
+		if id, err = cs.store.Add(t); err != nil {
+			return 0, err
 		}
-	} else {
-		id = len(cs.tweets)
 	}
 
-	cs.tweets[id] = t
-	if a, ok := cs.finds[t.Author]; ok == true {
-		cs.finds[t.Author] = append(a, t)
+	t.Id = id
+	nt := *t
+	cs.tweets[id] = &nt
+
+	if a, ok := cs.finds[nt.Author]; ok == true {
+		cs.finds[nt.Author] = append(a, &nt)
 	}
 	return id, nil
 }
