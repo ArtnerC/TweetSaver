@@ -13,7 +13,7 @@ import (
 var Storage = simplestore.NewStorageCache(new(simplestore.FileStorage))
 
 func main() {
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8888", nil)
 }
 
 func MapStorage(c martini.Context, r *http.Request) {
