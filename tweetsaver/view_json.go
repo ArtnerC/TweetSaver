@@ -16,14 +16,14 @@ func NewJSONView(w http.ResponseWriter) *JSONView {
 func (jv *JSONView) DisplayItem(t *Tweet) {
 	err := json.NewEncoder(jv.response).Encode(t)
 	if err != nil {
-		http.Error(jv.response, err.Error(), http.StatusInternalServerError)
+		jv.DisplayError(err, http.StatusInternalServerError)
 	}
 }
 
 func (jv *JSONView) DisplayAll(tweets []*Tweet) {
 	err := json.NewEncoder(jv.response).Encode(tweets)
 	if err != nil {
-		http.Error(jv.response, err.Error(), http.StatusInternalServerError)
+		jv.DisplayError(err, http.StatusInternalServerError)
 	}
 }
 
@@ -32,9 +32,17 @@ func (jv *JSONView) DisplayAddItem() {
 }
 
 func (jv *JSONView) DisplayItemAdded(id int) {
-
+	jsonID := struct{ id int }{id: id}
+	if err := json.NewEncoder(jv.response).Encode(&jsonID); err != nil {
+		jv.DisplayError(err, http.StatusInternalServerError)
+	}
 }
 
 func (jv *JSONView) DisplayError(err error, code int) {
-	http.Error(jv.response, err.Error(), code)
+	e := struct {
+		e string `json:"error"`
+	}{e: err.Error()}
+	ebyte, _ := json.Marshal(&e)
+	//e := fmt.Sprintf(`{ "error": "%s" }`, err.Error())
+	http.Error(jv.response, string(ebyte), code)
 }
