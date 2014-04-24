@@ -1,7 +1,7 @@
 {
- "CurrentID": 7,
- "Items": 5,
- "LastModified": "2014-02-20T07:04:29.8031193-08:00",
+ "CurrentID": 9,
+ "Items": 7,
+ "LastModified": "2014-04-09T05:13:31.1684607-07:00",
  "Tweets": [
   {
    "Id": 0,
@@ -42,6 +42,22 @@
    "Link": "https://twitter.com/jonnysun/status/436222727851356160",
    "Timestamp": "2013-12-20T07:04:29.7931165-08:00",
    "SaveTime": "2014-02-20T07:04:29.7981175-08:00"
+  },
+  {
+   "Id": 7,
+   "Text": "I have a degree in philosophy \u0026 everyone's all \"what are you going to do with that?\" \u0026 I'm like \"die\" because I am. We all are.",
+   "Author": "adamrensch",
+   "Link": "https://twitter.com/adamrensch/status/423929603313262592",
+   "Timestamp": "2014-01-16T13:27:00-08:00",
+   "SaveTime": "0001-01-01T00:00:00Z"
+  },
+  {
+   "Id": 8,
+   "Text": "Hi I'm the guy you were avoiding eye contact with. I googled your name, would you like to go out wi..yes that was me who added u on facebook",
+   "Author": "briangaar",
+   "Link": "https://twitter.com/briangaar/status/442044703190421504",
+   "Timestamp": "2014-03-07T13:10:00-08:00",
+   "SaveTime": "0001-01-01T00:00:00Z"
   }
  ]
 }
