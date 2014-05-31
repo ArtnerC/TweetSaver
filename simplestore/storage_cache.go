@@ -17,7 +17,7 @@ type CacheStorage struct {
 // NewStorageCache creates a CacheStorage object that applies
 // a caching layer to the provided p which implements the
 // Persistence interface.
-func NewStorageCache(p ts.Persistence) *CacheStorage {
+func NewStorageCache(p ts.Persistence) ts.Persistence {
 	return &CacheStorage{
 		tweets:    make(map[int]*ts.Tweet),
 		finds:     make(map[string][]*ts.Tweet),
@@ -29,7 +29,7 @@ func NewStorageCache(p ts.Persistence) *CacheStorage {
 // NewMemoryStorage creates a CacheStorage object that can
 // be used to store data in volatile RAM without the need
 // for an underlying Persistence object.
-func NewMemoryStorage() *CacheStorage {
+func NewMemoryStorage() ts.Persistence {
 	return NewStorageCache(nil)
 }
 
@@ -45,6 +45,14 @@ func (cs *CacheStorage) Get(id int) *ts.Tweet {
 		}
 	}
 	return nil
+}
+
+func (cs *CacheStorage) GetAt(pos, limit int) ([]*ts.Tweet, int) {
+	if cs.store == nil {
+		panic("Cannot GetAt, implement GetAt")
+	}
+
+	return cs.store.GetAt(pos, limit)
 }
 
 // GetAll returns all stored elements. It also caches everything for future

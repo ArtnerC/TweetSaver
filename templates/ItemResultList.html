@@ -1,0 +1,25 @@
+{{define "Title"}}Tweet Saver{{end}}
+
+{{define "Body"}}
+<h1>All Tweets <a class="btn btn-primary" href="/additem.html">Add Tweet</a></h1>
+<div class="row">
+    {{range .Tweets}}
+	<div class="col-md-6 col-lg-4">
+		<div class="well">
+			<blockquote>
+				<p>{{.Text}}</p>
+				<footer>{{.Author}} on <a href="{{.Link}}">Twitter</a></footer>
+			</blockquote>
+			<p class="text-right"><a href="/tweets.html/{{.Id}}" class="btn btn-default">View</a></p>
+		</div>
+	</div>
+	{{end}}
+</div>
+<div>
+	<p class="text-center">
+		<a class="btn btn-default" href="/tweets.html?pos={{max 0 (sub .Pos 10)}}">&lt;</a>
+		<strong>Showing {{.Pos}} through {{add .Pos .Length}} of {{.Total}}</strong>
+		<a class="btn btn-default" href="/tweets.html?pos={{min .Total (add .Pos 10)}}">&gt;</a>
+	</p>
+</div>
+{{end}}

@@ -55,9 +55,9 @@ func GetAll(rw http.ResponseWriter, req *http.Request, p ts.Persistence) {
 
 	if pos == "" {
 		ts.PerformGetAll(ts.NewJSONView(rw), p)
+	} else {
+		ts.PerformGetAt(pos, limit, ts.NewJSONView(rw), p)
 	}
-
-	ts.PerformGetAt(pos, limit, ts.NewJSONView(rw), p)
 }
 
 func GetAllHTML(rw http.ResponseWriter, req *http.Request, p ts.Persistence) {
@@ -65,9 +65,9 @@ func GetAllHTML(rw http.ResponseWriter, req *http.Request, p ts.Persistence) {
 
 	if pos == "" {
 		ts.PerformGetAll(ts.NewPageView(rw), p)
+	} else {
+		ts.PerformGetAt(pos, limit, ts.NewPageView(rw), p)
 	}
-
-	ts.PerformGetAt(pos, limit, ts.NewPageView(rw), p)
 }
 
 func DisplayAddHTML(rw http.ResponseWriter) {

@@ -34,27 +34,33 @@ func (ds *DataStore) Get(id int) *tweetsaver.Tweet {
 	return t
 }
 
-func (ds *DataStore) GetAt(pos, limit int) []*tweetsaver.Tweet {
-	q := datastore.NewQuery(tweet_kind).Ancestor(tweetsaverKey(ds.c)).Order("-SaveTime").Offset(pos).Limit(limit)
-
-	num, err := q.Count(ds.c)
+func (ds *DataStore) GetAt(pos, limit int) ([]*tweetsaver.Tweet, int) {
+	q := datastore.NewQuery(tweet_kind).Ancestor(tweetsaverKey(ds.c)).Order("-SaveTime")
+	qAt := q.Offset(pos).Limit(limit)
+	total, err := q.Count(ds.c)
 	if err != nil {
 		log.Printf("Datastore GetAt (count): %s", err.Error())
-		return nil
+		return nil, 0
+	}
+
+	num, err := qAt.Count(ds.c)
+	if err != nil {
+		log.Printf("Datastore GetAt (qAt count): %s", err.Error())
+		return nil, 0
 	}
 
 	tweets := make([]*tweetsaver.Tweet, 0, num)
-	keys, err := q.GetAll(ds.c, &tweets)
+	keys, err := qAt.GetAll(ds.c, &tweets)
 	if err != nil {
 		log.Printf("Datastore GetAt (getall): %s", err.Error())
-		return nil
+		return nil, 0
 	}
 
 	for i := range tweets {
 		tweets[i].Id = int(keys[i].IntID())
 	}
 
-	return tweets
+	return tweets, total
 }
 
 func (ds *DataStore) GetAll() []*tweetsaver.Tweet {

@@ -2,9 +2,11 @@ package simplestore
 
 import (
 	"encoding/json"
-	ts "github.com/ArtnerC/TweetSaver/tweetsaver"
 	"os"
+	"sort"
 	"time"
+
+	ts "github.com/ArtnerC/TweetSaver/tweetsaver"
 )
 
 var StorageFileName = "Tweets.json" // Target file
@@ -26,6 +28,12 @@ type FileStruct struct {
 	Tweets       []*ts.Tweet
 }
 
+type TweetSorter []*ts.Tweet
+
+func (tsort TweetSorter) Len() int           { return len(tsort) }
+func (tsort TweetSorter) Swap(i, j int)      { tsort[i], tsort[j] = tsort[j], tsort[i] }
+func (tsort TweetSorter) Less(i, j int) bool { return tsort[i].Timestamp.Before(tsort[j].Timestamp) }
+
 // open handles opening or creating a new file to store tweets as JSON
 func (fs *FileStorage) open() {
 	var err error
@@ -44,6 +52,23 @@ func (fs *FileStorage) Get(id int) (ret *ts.Tweet) {
 		}
 	}
 	return
+}
+
+// GetAt will return a slice of tweets at the given position with the selected
+// limit of returned results
+func (fs *FileStorage) GetAt(pos, limit int) ([]*ts.Tweet, int) {
+	tweets := fs.GetAll()
+	if pos >= len(tweets) {
+		return nil, 0
+	}
+	end := pos + limit
+	if end > len(tweets) {
+		end = len(tweets)
+	}
+
+	sort.Sort(TweetSorter(tweets))
+
+	return tweets[pos:end], len(tweets)
 }
 
 // GetAll will fetch and return all stored tweets

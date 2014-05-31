@@ -39,8 +39,8 @@ func PerformGetAt(pos, limit string, v View, p Persistence) error {
 		intlimit = 10
 	}
 
-	tweets := p.GetAt(intpos, intlimit)
-	v.DisplayAll(tweets)
+	tweets, total := p.GetAt(intpos, intlimit)
+	v.DisplayResults(tweets, intpos, total)
 	return nil
 }
 

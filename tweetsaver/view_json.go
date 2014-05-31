@@ -20,6 +20,24 @@ func (jv *JSONView) DisplayItem(t *Tweet) {
 	}
 }
 
+func (jv *JSONView) DisplayResults(tweets []*Tweet, pos, total int) {
+	s := struct {
+		Tweets []*Tweet
+		Length int
+		Pos    int
+		Total  int
+	}{
+		tweets,
+		len(tweets),
+		pos,
+		total,
+	}
+	err := json.NewEncoder(jv.response).Encode(&s)
+	if err != nil {
+		jv.DisplayError(err, http.StatusInternalServerError)
+	}
+}
+
 func (jv *JSONView) DisplayAll(tweets []*Tweet) {
 	err := json.NewEncoder(jv.response).Encode(tweets)
 	if err != nil {

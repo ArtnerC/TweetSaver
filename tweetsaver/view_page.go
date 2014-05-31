@@ -8,6 +8,24 @@ import (
 )
 
 func init() {
+	blueprint.Map("add", func(a, b int) int {
+		return a + b
+	})
+	blueprint.Map("sub", func(a, b int) int {
+		return a - b
+	})
+	blueprint.Map("min", func(a, b int) int {
+		if a < b {
+			return a
+		}
+		return b
+	})
+	blueprint.Map("max", func(a, b int) int {
+		if a > b {
+			return a
+		}
+		return b
+	})
 	blueprint.MustCompileDir("Master.html", "../templates/")
 }
 
@@ -26,6 +44,23 @@ func NewPageViewReq(w http.ResponseWriter, r *http.Request) *PageView {
 
 func (pv *PageView) DisplayItem(t *Tweet) {
 	if err := blueprint.Execute(pv.rw, "Item.html", t); err != nil {
+		http.Error(pv.rw, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+func (pv *PageView) DisplayResults(tweets []*Tweet, pos, total int) {
+	s := struct {
+		Tweets []*Tweet
+		Length int
+		Pos    int
+		Total  int
+	}{
+		tweets,
+		len(tweets),
+		pos,
+		total,
+	}
+	if err := blueprint.Execute(pv.rw, "ItemResultList.html", &s); err != nil {
 		http.Error(pv.rw, err.Error(), http.StatusInternalServerError)
 	}
 }
